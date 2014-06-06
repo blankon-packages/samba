@@ -1,0 +1,4 @@
+etc/samba
+var/cache/samba
+var/lib/samba
+var/log/samba
