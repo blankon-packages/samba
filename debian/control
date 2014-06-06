@@ -22,11 +22,11 @@ Build-Depends: bison,
 # libcups2-dev did in the past)
                heimdal-multidev (>= 1.6~),
                libacl1-dev,
-               libaio-dev [linux-any],
+               libaio-dev,
                libattr1-dev,
                libblkid-dev,
                libbsd-dev,
-               libcap-dev [linux-any],
+               libcap-dev,
                libctdb-dev (>= 2),
                libcups2-dev,
 # workaround for #745233 and outdated buildd-chroots
