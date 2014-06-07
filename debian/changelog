@@ -1,3 +1,9 @@
+samba (2:4.1.7+dfsg-2blankon3) tambora; urgency=low
+
+  * debian/samba.install drop usr/share/man/man1/log2pcap.1
+
+ -- Rahman Yusri Aftian <aftian@di.blankon.in>  Sat, 07 Jun 2014 00:43:32 +0000
+
 samba (2:4.1.7+dfsg-2blankon2) tambora; urgency=low
 
   * debian/rules disable remove vfstest.1  
