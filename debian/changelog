@@ -1,4 +1,4 @@
-samba (2:4.1.7+dfsg-2blankon3) tambora; urgency=low
+samba (2:4.1.7+dfsg-2+b1blankon3) tambora; urgency=low
 
   * debian/*.install drop usr/share/man/man1/* usr/share/man/man8/* 
    
