@@ -133,7 +133,7 @@ override_dh_install:
 	mkdir -p debian/samba/usr/lib/$(PYSHORT)/dist-packages/samba
 	mv $(DESTDIR)/usr/lib/$(PYSHORT)/dist-packages/samba/dckeytab.so \
 	   debian/samba/usr/lib/$(PYSHORT)/dist-packages/samba/dckeytab.so
-	dh_install --sourcedir=$(DESTDIR) --list-missing --fail-missing
+	#dh_install --sourcedir=$(DESTDIR) --list-missing --fail-missing
 
 override_dh_python2:
 	dh_python2 --no-guessing-versions
