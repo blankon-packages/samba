@@ -145,7 +145,7 @@ override_dh_install:
 	#Remove unused ldb share configuration plugin
 	rm $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/samba/share/ldb.so
 	#Remove unused vfstest manpage vfstest is no longer installed
-	rm $(DESTDIR)/usr/share/man/man1/vfstest.1
+	#rm $(DESTDIR)/usr/share/man/man1/vfstest.1
 	mkdir -p $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/plugin/krb5
 	mv $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/winbind_krb5_locator.so \
 	   $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/plugin/krb5
@@ -193,7 +193,7 @@ override_dh_install:
 	echo "d /run/samba 0755 root root -" > $(DESTDIR)/usr/lib/tmpfiles.d/samba.conf
 	#install -m 0644 packaging/systemd/samba.sysconfig $(DESTDIR)/etc/default/samba
 	#
-	dh_install --sourcedir=$(DESTDIR) --list-missing --fail-missing
+	dh_install --sourcedir=$(DESTDIR)
 
 override_dh_python2:
 	dh_python2 --no-guessing-versions
