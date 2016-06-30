@@ -1,14 +1,442 @@
-samba (2:4.1.7+dfsg-2+b1blankon2) tambora; urgency=low
+samba (2:4.4.4+dfsg-2blankon1) tambora; urgency=medium
 
-  * debian/rules drop --list-missing --fail-missing 
-   
- -- Rahman Yusri Aftian <aftian@di.blankon.in>  Sat, 07 Jun 2014 00:43:32 +0000
+  * Make sure for BlankOn add $USER to sambashare group
 
-samba (2:4.1.7+dfsg-2blankon1) tambora; urgency=low
+ -- dotovr <dotovr@preko>  Fri, 01 Jul 2016 03:26:45 +0700
 
-  * BUMP libldb-dev (>= 1:1.1.17-1)
-  
- -- Rahman Yusri Aftian <aftian@di.blankon.in>  Fri, 06 Jun 2014 12:55:23 +0000
+samba (2:4.4.4+dfsg-2) unstable; urgency=medium
+
+  * Mask samba-ad-dc.service unless needed (Closes: #828137)
+  * Fix kill path in systemd units (Closes: #828730)
+
+ -- Mathieu Parent <sathieu@debian.org>  Mon, 27 Jun 2016 21:37:58 +0200
+
+samba (2:4.4.4+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+  * The "Thanks lintian" release
+  * Fixes:
+    - Ensure that dpkg-buildflags are passed, and enable all hardening
+    - systemd
+      + Enable systemd (sd_notify) on Linux, and install systemd files
+      + Remove obsolete syslog.target from service files
+      + Add documentation field to unit files
+    - Drop fix-cluster-build.diff: no more needed
+    - Use secure Vcs-* URLs
+    - Fix copyright file
+    - samba.postinst: command-with-path-in-maintainer-script update-inetd
+    - samba-common-bin: package-contains-empty-directory usr/lib/samba/
+    - winbind: package-contains-empty-directory usr/lib/samba/nss_info/
+    - Add Description to init files
+  * No-op fixes:
+    - d/control: Drop XS-Testsuite field
+    - Drop redundant "Priority: optional" fields
+    - Drop redundant "Section: net" fields
+    - Describe non-standard-dir-perm var/spool/samba/
+    - Describe no_build_system.patch
+    - Remove README.build-upstream, as packaging/Debian/ is now empty
+    - Verify upstream tarball from uscan
+    - Update README.source and remove build-orig.sh
+
+ -- Mathieu Parent <sathieu@debian.org>  Mon, 13 Jun 2016 21:52:52 +0200
+
+samba (2:4.4.3+dfsg-4) unstable; urgency=medium
+
+  * Fix build with DEB_BUILD_OPTIONS=nocheck
+  * Still run "make quicktest" but ignore failures
+
+ -- Mathieu Parent <sathieu@debian.org>  Sat, 07 May 2016 13:18:53 +0200
+
+samba (2:4.4.3+dfsg-3) unstable; urgency=medium
+
+  * Skip raw.write tests for now as they fail on 32-bit
+
+ -- Mathieu Parent <sathieu@debian.org>  Fri, 06 May 2016 15:34:07 +0200
+
+samba (2:4.4.3+dfsg-2) unstable; urgency=medium
+
+  * Run quicktest during build
+  * Reproducibility:
+    - Drop no_build_options.patch as it breaks "make test"
+    - Remove unreproducible build environment instead
+  * Mention that patch waf_smbpasswd_location was submitted
+  * usershare.patch: Fix "usershare max shares" default in XML doc and in s4
+
+ -- Mathieu Parent <sathieu@debian.org>  Tue, 03 May 2016 12:30:56 +0200
+
+samba (2:4.4.3+dfsg-1) unstable; urgency=medium
+
+  * Cleanup ctdb READMEs during 'clean' step.
+  * New upstream release.
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Mon, 02 May 2016 14:12:46 +0000
+
+samba (2:4.4.2+dfsg-2) unstable; urgency=medium
+
+  * Merge in 4.3 package changes.
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Wed, 27 Apr 2016 01:29:47 +0000
+
+samba (2:4.4.2+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump standards version to 3.9.8 (no changes).
+  * Drop build dependency on perl-modules; depend on perl instead.
+  * Upload to unstable.
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Tue, 26 Apr 2016 23:29:54 +0000
+
+samba (2:4.4.1+dfsg-1) experimental; urgency=medium
+
+  * New upstream release
+   + Fixes (Patches by Stefan Metzmacher of SerNet and others on the Samba Team):
+    - CVE-2015-5370 (Multiple errors in DCE-RPC code)
+    - CVE-2016-2110 (Man in the middle attacks possible with NTLMSSP)
+    - CVE-2016-2111 (NETLOGON Spoofing Vulnerability)
+    - CVE-2016-2112 (LDAP client and server don't enforce integrity)
+    - CVE-2016-2113 (Missing TLS certificate validation)
+    - CVE-2016-2114 ("server signing = mandatory" not enforced)
+    - CVE-2016-2115 (SMB IPC traffic is not integrity protected)
+    - CVE-2016-2118 (SAMR and LSA man in the middle attacks possible)
+  * Additional regression fix for 'net ads join' to a Windows 2003 domain by metze
+
+ -- Andrew Bartlett <abartlet+debian@catalyst.net.nz>  Mon, 11 Apr 2016 16:09:59 +1200
+
+samba (2:4.4.0+dfsg-1) experimental; urgency=medium
+  [ Andrew Bartlett ]
+  * New upstream release.
+
+ -- Andrew Bartlett <abartlet+debian@catalyst.net.nz>  Wed, 06 Apr 2016 17:08:20 +1200
+
+samba (2:4.3.8+dfsg-1) unstable; urgency=low
+
+  [ Jelmer Vernooĳ ]
+  * Add patch no_build_system.patch: drop host-specific define that
+    prevents reproducible builds.
+  * New upstream release.
+   + Drop patch
+     security-2016-04-12-prerequisite-v4-3-regression-fixes.metze01.txt,
+     now included upstream.
+  * Bump version in Replaces: samba-libs for samba-vfs-modules to
+    4.3.2+dfsg-1, to fix jessie->stretch upgrades. Closes: #821070
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Sat, 16 Apr 2016 01:18:36 +0000
+
+samba (2:4.3.7+dfsg-1) unstable; urgency=high
+
+  * New upstream release.
+   + Fixes (Patches by Stefan Metzmacher of SerNet and others on the Samba Team):
+    - CVE-2015-5370 (Multiple errors in DCE-RPC code)
+    - CVE-2016-2110 (Man in the middle attacks possible with NTLMSSP)
+    - CVE-2016-2111 (NETLOGON Spoofing Vulnerability)
+    - CVE-2016-2112 (LDAP client and server don't enforce integrity)
+    - CVE-2016-2113 (Missing TLS certificate validation)
+    - CVE-2016-2114 ("server signing = mandatory" not enforced)
+    - CVE-2016-2115 (SMB IPC traffic is not integrity protected)
+    - CVE-2016-2118 (SAMR and LSA man in the middle attacks possible)
+  * Additional regression fix for 'net ads join' to a Windows 2003 domain by metze
+
+ -- Andrew Bartlett <abartlet+debian@catalyst.net.nz>  Wed, 13 Apr 2016 10:24:17 +1200
+
+samba (2:4.3.6+dfsg-2) unstable; urgency=low
+  [ Mathieu Parent ]
+  * Fix FTBFS when built with dpkg-buildpackage -A (Closes: #818146). Patch by
+    Santiago Vila
+  * Drop samba from winbind depends and use samba-common* instead
+    (Closes: #732604)
+  * Add an override to script-not-executable etc/ctdb/events.d/10.external
+  * Add ufw integration (from Ubuntu)
+  * Don't build ctdb twice:
+    - Shorten build time
+    - Fix ctdb log path from /var/log/log.ctdb to /var/log/ctdb/log.ctdb
+    - Remove unused /usr/lib/*/ctdb/*.so files
+
+  [ Steven Chamberlain ]
+  * ctdb: Fix detection of gnukfreebsd (Closes: #802621)
+
+  [ Jelmer Vernooij ]
+  * Add no_build_options.patch: make package more reproducible by
+    disabling build options output.
+
+  [ Andrew Bartlett ]
+  * Allow to build/run the AD DC provision/dbcheck against talloc
+    2.1.6 (Closes: #820015)
+
+ -- Mathieu Parent <sathieu@debian.org>  Thu, 31 Mar 2016 22:26:11 +0200
+
+samba (2:4.3.6+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+   + Fixes:
+    - CVE-2015-7560: Incorrect ACL get/set allowed on symlink path.
+    - CVE-2016-0771 (Out-of-bounds read in internal DNS server.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sat, 27 Feb 2016 23:28:53 +0000
+
+samba (2:4.3.5+dfsg-3) unstable; urgency=medium
+
+  * Fix dhclient hook if samba is not installed. Thanks, Jan Braun.
+    Closes: #801976
+  * Rebuild against current version of ldb in the archive. Closes:
+    #817036
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Tue, 08 Mar 2016 00:24:10 +0000
+
+samba (2:4.3.5+dfsg-2) unstable; urgency=medium
+
+  * Move strict ldb dependency to samba-dsdb-modules package, which
+    actually contains the modules. Closes: #816210
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 06 Mar 2016 22:51:53 +0000
+
+samba (2:4.3.5+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Fixed usershare.patch to apply against new version.
+  * Loosen dependencies on ldb to ldb >= 1.1.21, per upstream.
+  * Drop patch sockets-with-htons.patch: applied upstream.
+  * Bump standards version to 3.9.7 (no changes).
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sat, 05 Mar 2016 15:56:42 +0000
+
+samba (2:4.3.3+dfsg-2) unstable; urgency=medium
+
+  [ Jelmer Vernooij ]
+  * Add dependency on libtevent-dev in samba-dev.
+
+  [ Mathieu Parent ]
+  * Fix CTDB behavior since CVE-2015-8543 (Closes: #813406)
+
+ -- Mathieu Parent <sathieu@debian.org>  Thu, 04 Feb 2016 13:25:01 +0100
+
+samba (2:4.3.3+dfsg-1) unstable; urgency=medium
+
+  * New upstream release. Closes: #808133.
+   + Drop subunit dependency, no longer used.
+   + Drop ntdb dependencies, no longer used.
+   + Fixes:
+    - CVE-2015-5252: Insufficient symlink verification in smbd
+    - CVE-2015-5296: Samba client requesting encryption vulnerable
+                     downgrade attack
+    - CVE-2015-5299: Missing access control check in shadow copy code
+    - CVE-2015-7540: Remote DoS in Samba (AD) LDAP server
+    - CVE-2015-8467: Denial of service attack against Windows Active Directory
+                     server
+    - CVE-2015-3223: Denial of service in Samba Active Directory server
+    - CVE-2015-5330: Remote memory read in Samba LDAP server
+  * Remove libpam-smbpasswd, which is broken and slated for removal
+    upstream. Closes: #799840
+  * Remove lib/zlib/contrib/dotzlib/DotZLib.chm from excluded files in
+    copyright; no longer shipped upstream.
+  * Remove wins2dns.awk example script.
+  * Remove the samba-doc package, and move examples files from it to
+    relevant other packages. Closes: #769385
+  * Move samba-dsdb-modules back from Depends to Recommends, as using
+    Samba as a standalone server doesn't require the dsdb modules.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Fri, 18 Dec 2015 01:18:42 +0000
+
+samba (2:4.3.0+dfsg-2) experimental; urgency=medium
+
+  * Re-enable cluster support.
+   + Build samba-cluster-support as built-in library, since its dependencies
+     are broken.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Mon, 28 Sep 2015 00:34:51 +0000
+
+samba (2:4.3.0+dfsg-1) experimental; urgency=medium
+
+  * Fix watch file.
+  * New upstream release.
+  * Drop no_wrapper patch: applied upstream.
+  * Drop patch ctdb_sockpath.patch: applied upstream.
+  * Drop Fix-CTDB-build-with-PMDA patch: applied upstream.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sat, 19 Sep 2015 01:59:36 +0000
+
+samba (2:4.2.1+dfsg-1) experimental; urgency=medium
+
+  [ Jelmer Vernooij ]
+  * New upstream release.
+   + Drop patch do-not-install-smbclient4-and-nmbclient4: applied upstream.
+   + Drop patch
+     bug_598313_upstream_7499-nss_wins-dont-clobber-daemons-logs.patch:
+     present upstream.
+   + Refresh patch 26_heimdal_compat.26_heimdal_compat.
+   + Add build-dependency on libarchive-dev.
+  * Drop samba_bug_11077_torturetest.patch: applied upstream.
+  * Drop dependency on ctdb - now bundled with Samba.
+  * Use bundled Heimdal as the system Heimdal doesn't contain the
+    changes required for Samba.
+  * Add patch heimdal-rfc3454.txt: patch in truncated rfc3454.txt for
+    building bundled heimdal.
+  * Drop patches 25_heimdal_api_changes and 26_heimdal_compat.
+  * Disable cluster support; it breaks the build.
+  * Add patch no_wrapper: avoid dependencies on
+    {nss,uid,socket}_wrapper.
+  * Move some libraries around.
+  * Move ownership of var/lib/samba and var/lib/samba/private to samba-
+    common, remove obsolete samba4.dirs. Closes: #793866
+  * Remove ctdb-tests and ctdb-pcp-pmda packages as they contain problems
+    and unclear what they are useful for, now ctdb now longer provides
+    an external API.
+
+  [ Mathieu Parent ]
+  * Merge ctdb source package
+    - initial merge
+    - libctdb-dev has been dropped
+    - ctdb-dbg renamed to ctdb-tests, debug files moved to samba-dbg
+    - ctdb-tests depends on python
+  * Fix CTDB socketpath parsing
+  * Fix CTDB build with PMDA
+  * ctdb: Fix privacy breach on google.com (from documentation)
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 07 Dec 2014 15:34:36 +0000
+
+samba (2:4.1.20+dfsg-1) unstable; urgency=medium
+
+  * New upstream release (last compatible with current OpenChange).
+  * samba_bug_11077_torturetest.patch: refresh.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 20 Sep 2015 17:48:59 +0000
+
+samba (2:4.1.17+dfsg-5) unstable; urgency=medium
+
+  * Rebuild against new ldb. Closes: #799569
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 20 Sep 2015 13:20:53 +0000
+
+samba (2:4.1.17+dfsg-4) unstable; urgency=medium
+
+  * Add pidl_reproducible.patch: Make pidl output reproducible.
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Tue, 28 Apr 2015 00:10:21 +0000
+
+samba (2:4.1.17+dfsg-3) unstable; urgency=medium
+
+  * Rebuild against new ldb. Closes: #783424
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Mon, 27 Apr 2015 00:09:50 +0000
+
+samba (2:4.1.17+dfsg-2) unstable; urgency=medium
+
+  [ Andreas Beckmann ]
+  * Add samba.preinst to temporarily deactivate the old qtsmbstatusd
+    initscript which has dependencies incompatible with the new samba
+    initscript. This will ensure a clean upgrade path for samba if the
+    qtsmbstatus-server package was installed previously.  (Closes: #779666)
+
+ -- Ivo De Decker <ivodd@debian.org>  Sat, 07 Mar 2015 13:09:23 +0100
+
+samba (2:4.1.17+dfsg-1) unstable; urgency=high
+
+  * New upstream release. Fixes:
+  - CVE-2014-8143: Elevation of privilege to Active Directory Domain
+                   Controller. Closes: #776993
+  - CVE-2015-0240: Unexpected code execution in smbd. Closes: #779033
+  * Refresh patch add-so-version-to-private-libraries.
+  * Add new smbtorture test rpc.schannel_anon_setpw to detect the conditions
+    leading to CVE-2015-0240.
+  * Add breaks on qtsmbstatus-server (<< 2.2.1-3~). Closes: #775041
+  * Build-depend on reverted ldb version (with increased epoch).
+
+ -- Ivo De Decker <ivodd@debian.org>  Mon, 23 Feb 2015 20:20:21 +0100
+
+samba (2:4.1.13+dfsg-4) unstable; urgency=medium
+
+  * Revert previous patch, since ldb has an active module version check.
+    Instead, just depend on ldb 1.1.18. Closes: #771991
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Wed, 10 Dec 2014 18:13:42 +0000
+
+samba (2:4.1.13+dfsg-3) unstable; urgency=medium
+
+  * Update debian/rules to allow support for multiple upstream ldb
+    versions, when verified. Closes: #771991
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Thu, 04 Dec 2014 21:03:54 +0100
+
+samba (2:4.1.13+dfsg-2) unstable; urgency=medium
+
+  * Mask /etc/init.d/samba init script for systemd. This should make systemd
+    ignore the samba init script. Thanks to Michael Biebl for the suggestion.
+    Closes: #740942
+  * Disable samba init script on upgrade from wheezy to jessie.
+    Thanks again to Michael Biebl for the report.
+    Closes: #766690
+
+ -- Ivo De Decker <ivodd@debian.org>  Sat, 25 Oct 2014 00:49:12 +0200
+
+samba (2:4.1.13+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump standards version to 3.9.6 (no changes).
+
+ -- Ivo De Decker <ivodd@debian.org>  Tue, 21 Oct 2014 20:22:19 +0200
+
+samba (2:4.1.11+dfsg-2) unstable; urgency=medium
+
+  * Updated Italian translation. Thanks Luca Monducci. Closes: #760743
+  * Use HTTP in watch file, as ftp.samba.org is not working reliably for
+    me.
+  * Use Excluded-Files in debian/copyright for DFSG-nonfree files.
+  * Update Dutch translation. Thanks Frans Spiesschaert. Closes: #763650
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 07 Sep 2014 20:52:27 +0200
+
+samba (2:4.1.11+dfsg-1) unstable; urgency=high
+
+  * New upstream release. Fixes:
+   + CVE-2014-3560: Remote code execution in nmbd. Closes: #756759
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 03 Aug 2014 03:47:07 +0200
+
+samba (2:4.1.9+dfsg-2) unstable; urgency=medium
+
+  [ Jelmer Vernooij ]
+  * Depend on libgnutls28-dev rather than libgnutls-dev. Closes: #753146
+  * Remove outdated-autotools-helper-file overrides for config.guess and
+    config.sub; files are no longer present upstream.
+  * Add branch to Vcs-Git header.
+  * samba.smbd.upstart: Remove leftover code for RUN_MODE=inetd, which
+    was already removed elsewhere.
+  * Move dsdb-module library from samba-dsdb-modules to samba-libs, to
+    prevent circular dependencies between samba-dsdb-modules and samba-
+    libs. This is necessary since dsdb-module is now used by the dcerpc-
+    server library.
+
+  [ Debconf translations ]
+  * New Brazilian Portugese translation from Adriano Rafael Gomes.
+    Closes: #752719
+
+ -- Jelmer Vernooij <jelmer@debian.org>  Sun, 29 Jun 2014 19:43:52 +0200
+
+samba (2:4.1.9+dfsg-1) unstable; urgency=high
+
+  * New upstream security release. Fixes:
+    - CVE-2014-0244: nmbd denial of service
+    - CVE-2014-3493: smbd denial of service: server crash/memory corruption
+
+ -- Ivo De Decker <ivo.dedecker@ugent.be>  Mon, 23 Jun 2014 18:33:27 +0200
+
+samba (2:4.1.8+dfsg-1) unstable; urgency=medium
+
+  [ Jelmer Vernooij ]
+  * Remove smbd and nmbd from required-start and required-stop in
+    samba.init. Closes: #739887
+
+  [ Ivo De Decker ]
+  * Remove workaround for #745233.
+  * New upstream release. Fixes:
+    - CVE-2014-0239: dns: Don't reply to replies. Closes: #749845
+    - CVE-2014-0178: Malformed FSCTL_SRV_ENUMERATE_SNAPSHOTS response.
+  * Use the upstream version of the smb.conf.5 manpage, instead of building
+    it. This is an ugly temporary workaround because xsltproc crashes on some
+    architectures when building this manpage (due to #750593).
+    This fixes the FTBFS, and should make samba installable with the new ldb
+    version. Closes: #750541, 750796
+
+ -- Ivo De Decker <ivo.dedecker@ugent.be>  Sun, 08 Jun 2014 23:37:53 +0200
 
 samba (2:4.1.7+dfsg-2) unstable; urgency=medium
 

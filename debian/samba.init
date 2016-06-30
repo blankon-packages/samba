@@ -2,11 +2,12 @@
 
 ### BEGIN INIT INFO
 # Provides:          samba
-# Required-Start:    smbd nmbd
-# Required-Stop:     smbd nmbd
-# Default-Start:     
-# Default-Stop:      
-# Short-Description: ensure Samba daemons are started (nmbd and smbd)
+# Required-Start:
+# Required-Stop:
+# Default-Start:
+# Default-Stop:
+# Short-Description: ensure Samba daemons are started (nmbd, smbd and samba)
+# Description: Starts Samba, a Windows AD and SMB/CIFS fileserver for UNIX
 ### END INIT INFO
 
 set -e

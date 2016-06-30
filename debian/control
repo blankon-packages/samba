@@ -5,96 +5,90 @@ Maintainer: BlankOn Developers <blankon-dev@googlegroups.com>
 XSBC-Original-Maintainer: Debian Samba Maintainers <pkg-samba-maint@lists.alioth.debian.org>
 Uploaders: Steve Langasek <vorlon@debian.org>,
            Christian Perrier <bubulle@debian.org>,
-           Jelmer Vernooij <jelmer@debian.org>,
-           Ivo De Decker <ivo.dedecker@ugent.be>
+           Jelmer Vernooĳ <jelmer@debian.org>,
+           Ivo De Decker <ivodd@debian.org>,
+           Mathieu Parent <sathieu@debian.org>,
+           Andrew Bartlett <abartlet+debian@catalyst.net.nz>
 Homepage: http://www.samba.org
-Standards-Version: 3.9.5
+Standards-Version: 3.9.8
 Build-Depends: bison,
-               comerr-dev,
                debhelper (>> 9),
+               dh-systemd (>= 1.5),
                docbook-xml,
                docbook-xsl,
                faketime,
                flex,
-               heimdal-dev,
-# heimdal-multidev is pulled in by heimdal-dev, but it's listed here for when
-# heimdal-dev is removed because other build-deps pull in libkrb5-dev (like
-# libcups2-dev did in the past)
-               heimdal-multidev (>= 1.6~),
                libacl1-dev,
                libaio-dev,
+               libarchive-dev,
                libattr1-dev,
                libblkid-dev,
                libbsd-dev,
                libcap-dev,
-               libctdb-dev (>= 2),
                libcups2-dev,
-# workaround for #745233 and outdated buildd-chroots
-               libgmp10 (>= 2:6.0.0),
-               libgnutls-dev,
-               libheimntlm0-heimdal (>= 1.6~),
+               libgnutls28-dev,
                libldap2-dev,
-               libldb-dev (>= 1:1.1.17-1),
+               libldb-dev (>= 2:1.1.26~),
                libncurses5-dev,
-               libntdb-dev (>= 1.0),
                libpam0g-dev,
                libparse-yapp-perl,
                libpopt-dev,
                libreadline-dev,
-               libsubunit-dev,
-               libtalloc-dev (>= 2.0.8~),
-               libtdb-dev (>= 1.2.11~),
-               libtevent-dev (>= 0.9.18~),
+               libsystemd-dev,
+               libtalloc-dev (>= 2.1.6~),
+               libtdb-dev (>= 1.3.8~),
+               libtevent-dev (>= 0.9.25~),
                perl,
-               perl-modules,
                pkg-config,
                po-debconf,
                python-all-dev (>= 2.6.6-3),
                python-dnspython,
-               python-ldb (>= 1:1.1.16~),
-               python-ldb-dev (>= 1:1.1.16~),
-               python-ntdb,
-               python-talloc-dev (>= 2.0.8~),
-               python-tdb (>= 1.2.11~),
+               python-ldb (>= 2:1.1.26~),
+               python-ldb-dev (>= 2:1.1.26~),
+               python-talloc-dev (>= 2.1.6~),
+               python-tdb (>= 1.3.8~),
                python-testtools,
                python3,
-               subunit (>= 0.0.6),
                xsltproc,
-               zlib1g-dev (>= 1:1.2.3)
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-samba/samba.git
-Vcs-Git: git://anonscm.debian.org/pkg-samba/samba.git
-XS-Testsuite: autopkgtest
+               zlib1g-dev (>= 1:1.2.3),
+               ldb-tools,
+               libnss-wrapper,
+               libresolv-wrapper,
+               libsocket-wrapper,
+               libuid-wrapper,
+               python-crypto
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-samba/samba.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-samba/samba.git
 
 Package: samba
 Architecture: any
 Pre-Depends: dpkg (>= 1.15.6~), ${misc:Pre-Depends}
 Depends: adduser,
-         heimdal-hdb-api-8,
          libpam-modules,
          libpam-runtime (>= 1.0.1-11),
          lsb-base (>= 4.1+Debian),
          procps,
          python,
          python-dnspython,
-         python-ntdb,
          python-samba,
          samba-common (= ${source:Version}),
          samba-common-bin (=${binary:Version}),
-         samba-dsdb-modules,
          tdb-tools,
          update-inetd,
          ${misc:Depends},
          ${python:Depends},
          ${shlibs:Depends}
-Recommends: attr, logrotate, samba-vfs-modules
+Recommends: attr, logrotate, samba-dsdb-modules, samba-vfs-modules
 Suggests: bind9 (>= 1:9.5.1),
           bind9utils,
           ctdb,
           ldb-tools,
           ntp,
           smbldap-tools,
-          winbind
+          winbind,
+          ufw
 Enhances: bind9, ntp
+Breaks: qtsmbstatus-server (<< 2.2.1-3~)
 Replaces: libsamdb0 (<< 4.0.0~alpha17~),
           python-samba (<< 2:4.1.4+dfsg-3),
           samba-ad-dc,
@@ -128,7 +122,7 @@ Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Architecture: any
 Section: libs
-Depends: ${ldb:Depends}, ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Breaks: libdcerpc-server0 (<< 2:4.0.9),
         libdcerpc0 (<< 2:4.0.9),
         libgensec0 (<< 2:4.0.9),
@@ -158,14 +152,16 @@ Replaces: libdcerpc-server0 (<< 2:4.0.9),
           libsamdb0 (<< 2:4.0.9),
           libsmbclient-raw0 (<< 2:4.0.9),
           libsmbd0 (<< 2:4.0.9),
-          libtorture0 (<< 2:4.0.9)
+          libtorture0 (<< 2:4.0.9),
+          samba (<< 2:4.3.3+dfsg-1)
 # these conflicts can NOT be replaced by 'Breaks'
 # the old 3.6 packages should be removed before the new samba-libs is
 # unpacked, to avoid any code referencing the old location of the tdb files
 # see bug #726472
 Conflicts: libpam-smbpass (<< 2:4),
-           samba-common-bin (<< 2:4),
            samba (<< 2:4),
+           samba-common-bin (<< 2:4),
+           samba-dsdb-modules (<< 2:4.1.9+dfsg-2),
            winbind (<< 2:4)
 Description: Samba core libraries
  Samba is an implementation of the SMB/CIFS protocol for Unix systems,
@@ -242,8 +238,11 @@ Description: command-line SMB/CIFS clients for Unix
 
 Package: samba-testsuite
 Architecture: any
-Recommends: subunit
-Replaces: samba-doc (<< 2:4.0.5~), samba-tools, samba4-testsuite, samba-libs (<< 2:4.0.10+dfsg-4)
+Suggests: subunit
+Replaces: samba-doc (<< 2:4.0.5~),
+          samba-libs (<< 2:4.0.10+dfsg-4),
+          samba-tools,
+          samba4-testsuite
 Conflicts: samba-doc (<< 2:4.0.5~), samba-libs (<< 2:4.0.10+dfsg-4)
 Depends: samba-common-bin, ${misc:Depends}, ${shlibs:Depends}
 Description: test suite from Samba
@@ -293,6 +292,7 @@ Depends: libc6-dev,
          libpopt-dev,
          libtalloc-dev,
          libtdb-dev (>= 1.2.11),
+         libtevent-dev,
          samba-libs (= ${binary:Version}),
          ${misc:Depends}
 Section: devel
@@ -336,29 +336,14 @@ Description: tools for extending Samba
  This package contains include files shared by the various Samba-based
  libraries.
 
-Package: samba-doc
-Section: doc
-Architecture: all
-Multi-Arch: foreign
-Depends: ${misc:Depends}
-Pre-Depends: dpkg (>= 1.15.6~)
-Description: Samba documentation
- Samba is an implementation of the SMB/CIFS protocol for Unix systems,
- providing support for cross-platform file and printer sharing with
- Microsoft Windows, OS X, and other Unix systems.
- .
- This package contains all the manpage documentation for the Samba
- suite.
-
 Package: python-samba
 Pre-Depends: ${misc:Pre-Depends}
 Architecture: any
 Section: python
 Provides: ${python:Provides}
-Depends: python-ldb,
+Depends: python-crypto,
+         python-ldb,
          python-tdb,
-         python-ntdb,
-         python-crypto,
          ${misc:Depends},
          ${python:Depends},
          ${shlibs:Depends}
@@ -372,9 +357,10 @@ Description: Python bindings for Samba
 
 Package: samba-dsdb-modules
 Architecture: any
-Replaces: libgensec0 (<< 4.0.0~alpha17~git20110724.dfsg1-1)
+Replaces: libgensec0 (<< 4.0.0~alpha17~git20110724.dfsg1-1),
+          samba-libs (<< 2:4.1.9+dfsg-2)
 Section: libs
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${ldb:Depends}
 Enhances: libldb1
 Description: Samba Directory Services Database
  Samba is an implementation of the SMB/CIFS protocol for Unix systems,
@@ -387,7 +373,7 @@ Description: Samba Directory Services Database
 
 Package: samba-vfs-modules
 Architecture: any
-Replaces: samba-libs (<< 2:4.1.1+dfsg-1)
+Replaces: samba-libs (<< 4.3.2+dfsg-1)
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Enhances: samba
 Description: Samba Virtual FileSystem plugins
@@ -398,28 +384,8 @@ Description: Samba Virtual FileSystem plugins
  .
  This package contains plugins for the Samba server Virtual FileSystem.
 
-Package: libpam-smbpass
-Section: admin
-Priority: extra
-Architecture: any
-Multi-Arch: same
-Depends: libpam-runtime (>= 1.0.1-6),
-         samba-common (= ${source:Version}),
-         ${misc:Depends},
-         ${shlibs:Depends}
-Pre-Depends: dpkg (>= 1.15.6~)
-Suggests: samba
-Description: pluggable authentication module for Samba
- This is a module for PAM that enables a system administrator to migrate
- user passwords from the Unix password database to the SMB password
- database as used by Samba, and to subsequently keep the two databases in
- sync.  Unlike other solutions, it does this without needing users to log
- in to Samba using cleartext passwords, or requiring them to change their
- existing passwords.
-
 Package: libsmbclient
 Section: libs
-Priority: optional
 Architecture: any
 Multi-Arch: same
 Pre-Depends: dpkg (>= 1.15.6~), ${misc:Pre-Depends}
@@ -444,35 +410,10 @@ Description: development files for libsmbclient
  enables client applications to talk to Microsoft Windows and Samba servers
  using the SMB/CIFS protocol.
 
-Package: libsmbsharemodes0
-Section: libs
-Priority: optional
-Architecture: any
-Multi-Arch: same
-Pre-Depends: dpkg (>= 1.15.6~), ${misc:Pre-Depends}
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: shared library for non-samba access to the samba 'share modes' database
- This package provides libsmbsharemodes, a library that
- enables server applications to honour or apply the share modes that are used
- over CIFS.
-
-Package: libsmbsharemodes-dev
-Section: libdevel
-Priority: extra
-Architecture: any
-Multi-Arch: same
-Depends: libsmbsharemodes0 (= ${binary:Version}), ${misc:Depends}
-Pre-Depends: dpkg (>= 1.15.6~)
-Description: development files for libsmbsharemodes
- This package provides the development files (headers)
- required for building applications against libsmbsharemodes, a library that
- enables server applications to honour or apply the share modes that are used
- over CIFS.
-
 Package: winbind
 Pre-Depends: ${misc:Pre-Depends}
 Architecture: any
-Depends: samba (=${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Depends: samba-common (= ${source:Version}), samba-common-bin (=${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
 Enhances: libkrb5-26-heimdal
 Replaces: samba-doc (<< 2:4.0.5~), winbind4
 Conflicts: samba-doc (<< 2:4.0.5~)
@@ -492,8 +433,6 @@ Description: service to resolve user and group information from Windows NT serve
  be enabled via the libpam-winbind package.
 
 Package: libpam-winbind
-Section: net
-Priority: optional
 Architecture: any
 Multi-Arch: same
 Pre-Depends: dpkg (>= 1.15.6~), ${misc:Pre-Depends}
@@ -521,8 +460,6 @@ Description: Windows domain authentication integration plugin
  winbindd server to provide Windows domain authentication to the system.
 
 Package: libnss-winbind
-Section: net
-Priority: optional
 Architecture: any
 Multi-Arch: same
 Pre-Depends: dpkg (>= 1.15.6~)
@@ -565,7 +502,6 @@ Description: Samba debugging symbols
 
 Package: libwbclient0
 Section: libs
-Priority: optional
 Architecture: any
 Multi-Arch: same
 Pre-Depends: dpkg (>= 1.15.6~), ${misc:Pre-Depends}
@@ -589,7 +525,6 @@ Description: Samba winbind client library
 
 Package: libwbclient-dev
 Section: libdevel
-Priority: optional
 Architecture: any
 Multi-Arch: same
 Depends: libwbclient0 (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
@@ -603,3 +538,44 @@ Description: Samba winbind client library - development files
  required for building applications against libwbclient, a library for client
  applications that interact via the winbind pipe protocol with a Samba
  winbind server.
+
+Package: ctdb
+Architecture: any
+Multi-Arch: foreign
+Depends: iproute2 [linux-any],
+         lsb-base,
+         psmisc,
+         sudo,
+         tdb-tools,
+         time,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: ethtool [linux-any]
+Suggests: logrotate, lsof
+Description: clustered database to store temporary data
+ CTDB is a cluster implementation of the TDB database used by Samba and other
+ projects to store temporary data. If an application is already using TDB for
+ temporary data it is very easy to convert that application to be cluster aware
+ and use CTDB instead.
+ .
+ CTDB provides the same types of functions as TDB but in a clustered fashion,
+ providing a TDB-style database that spans multiple physical hosts in a cluster.
+ .
+ Features include:
+  * CTDB provides a TDB that has consistent data and consistent locking across
+    all nodes in a cluster.
+  * CTDB is very fast.
+  * In case of node failures, CTDB will automatically recover and repair all TDB
+    databases that it manages.
+  * CTDB is the core component that provides pCIFS ("parallel CIFS") with
+    Samba3/4.
+  * CTDB provides HA features such as node monitoring, node failover, and IP
+    takeover.
+  * CTDB provides a reliable messaging transport to allow applications linked
+    with CTDB to communicate to other instances of the application running on
+    different nodes in the cluster.
+  * CTDB has pluggable transport backends. Currently implemented backends are
+    TCP and Infiniband.
+  * CTDB supports a system of application specific management scripts, allowing
+    applications that depend on network or filesystem resources to be managed in
+    a highly available manner on a cluster.

@@ -1,5 +1,3 @@
-# these files from upstream aren't used in the build process
-samba source: outdated-autotools-helper-file source3/config.guess 2009-04-27
-samba source: outdated-autotools-helper-file source3/config.sub 2009-04-17
-samba source: outdated-autotools-helper-file examples/VFS/config.guess 2009-04-27
-samba source: outdated-autotools-helper-file examples/VFS/config.sub 2009-04-17
+# winbind talks over a unix domain socket, so non-arch specific dependencies are fine.
+samba source: dependency-is-not-multi-archified libnss-winbind depends on winbind (multi-arch: no)
+samba source: dependency-is-not-multi-archified libpam-winbind depends on winbind (multi-arch: no)
